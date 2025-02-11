@@ -13,7 +13,7 @@ function love.load()
 end
 
 function love.update(dt)
-    --world:update(dt) -- turn on gravity
+    world:update(dt) -- turn on gravity
     playerUpdate(dt)
 end
 
