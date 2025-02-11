@@ -10,7 +10,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 6,
-  nextobjectid = 23,
+  nextobjectid = 27,
   properties = {},
   tilesets = {
     {
@@ -157,28 +157,55 @@ return {
       properties = {},
       objects = {
         {
-          id = 16,
+          id = 23,
           name = "",
           type = "",
-          shape = "polygon",
-          x = 640,
+          shape = "rectangle",
+          x = 0,
           y = 576,
-          width = 0,
-          height = 0,
+          width = 640,
+          height = 64,
           rotation = 0,
           visible = true,
-          polygon = {
-            { x = 0, y = 0 },
-            { x = 0, y = -64 },
-            { x = 64, y = -64 },
-            { x = 64, y = -128 },
-            { x = 128, y = -128 },
-            { x = 128, y = -192 },
-            { x = 384, y = -192 },
-            { x = 384, y = 64 },
-            { x = -640, y = 64 },
-            { x = -640, y = 0 }
-          },
+          properties = {}
+        },
+        {
+          id = 24,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 640,
+          y = 512,
+          width = 64,
+          height = 128,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 25,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 704,
+          y = 448,
+          width = 64,
+          height = 192,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 26,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 768,
+          y = 384,
+          width = 256,
+          height = 256,
+          rotation = 0,
+          visible = true,
           properties = {}
         }
       }
@@ -187,7 +214,7 @@ return {
       type = "objectgroup",
       draworder = "topdown",
       id = 5,
-      name = "Destroyable",
+      name = "Crate",
       class = "",
       visible = true,
       opacity = 1,

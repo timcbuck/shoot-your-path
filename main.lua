@@ -1,4 +1,5 @@
 local love = require "love"
+local sti = require "libraries/Simple-Tiled-Implementation/sti"
 
 debug = true
 
@@ -7,23 +8,31 @@ function love.load()
     wf = require "libraries/windfield/windfield"
     world = wf.newWorld(0, 1000, false) -- xgravity, ygravity, sleep
     world:setQueryDebugDrawing(debug)
-
-    -- Require player object (requires world to be imported first (above))
+    -- Add collision classes
+    world:addCollisionClass("Platform")
+    world:addCollisionClass("Player")
+    world:addCollisionClass("Crate")
+    -- Require objects (other files)
     require "player"
-
+    require "crate"
     -- Initalise tables
     platforms = {}
-
+    -- Load first level
     loadLevel("level1.lua")
 end
 
 function love.update(dt)
     world:update(dt) -- turn on gravity
     playerUpdate(dt)
+    crateUpdate(dt)
 end
 
 function love.draw()
     playerDraw()
+    --crateDraw()
+    if debug then
+        world:draw()
+    end
 end
 
 function loadLevel(level)
@@ -37,19 +46,28 @@ function loadLevel(level)
     player:setPosition(playerStartX, playerStartY)
 
     -- Create platforms
-    -- They are polygon shapes so need to loop through all x, y points...
     for i, obj in pairs(level.layers["Platform"].objects) do
-        for i, pol in pairs(obj.polygon) do
-            print(pol.x)
+        createRectPlatform(obj.x, obj.y, obj.width, obj.height)
+    end
+
+    -- Create crates
+    if level.layers["Crate"].objects then
+        for i, obj in pairs(level.layers["Crate"].objects) do
+            createCrate(obj.x, obj.y)
         end
-        --createPlatform(obj.x, obj.y, obj.width, obj.height)
     end
 end
 
-function createPlatform(x, y , width, height)
+function createRectPlatform(x, y, width, height)
     if width > 0 and height > 0 then
         local platform = world:newRectangleCollider(x, y, width, height, {collision_class = "Platform"})
         platform:setType("static")
         table.insert(platforms, platform)
+    end
+end
+
+function love.mousepressed(x, y, button)
+    if button == 1 then
+        -- Shoot bullet in direction of clicked location
     end
 end
