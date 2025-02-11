@@ -6,29 +6,33 @@ debug = true
 function love.load()
     -- Create world using windfield library for physics
     wf = require "libraries/windfield/windfield"
-    world = wf.newWorld(0, 1000, false) -- xgravity, ygravity, sleep
+    world = wf.newWorld(0, 2000, false) -- xgravity, ygravity, sleep
     world:setQueryDebugDrawing(debug)
     -- Add collision classes
     world:addCollisionClass("Platform")
     world:addCollisionClass("Player")
     world:addCollisionClass("Crate")
+    world:addCollisionClass("Bullet")
     -- Require objects (other files)
     require "player"
     require "crate"
+    require "bullet"
     -- Initalise tables
     platforms = {}
     -- Load first level
-    loadLevel("level1.lua")
+    loadLevel("level1")
 end
 
 function love.update(dt)
     world:update(dt) -- turn on gravity
     playerUpdate(dt)
+    bulletUpdate(dt)
     crateUpdate(dt)
 end
 
 function love.draw()
     playerDraw()
+    bulletDraw()
     --crateDraw()
     if debug then
         world:draw()
@@ -36,7 +40,7 @@ function love.draw()
 end
 
 function loadLevel(level)
-    level = sti("levels/" .. level)
+    level = sti("levels/" .. level .. ".lua") -- load the level .lua file
 
     -- Set player start position
     for i, obj in pairs(level.layers["Spawn"].objects) do
@@ -69,5 +73,6 @@ end
 function love.mousepressed(x, y, button)
     if button == 1 then
         -- Shoot bullet in direction of clicked location
+        createBullet(player:getX(), player:getY())
     end
 end

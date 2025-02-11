@@ -4,7 +4,7 @@ playerStartY = 100
 player = world:newRectangleCollider(playerStartX, playerStartY, 32, 32, {collision_class = "Player"})
 player:setFixedRotation(true)
 player.speed = 240
-player.jumpStrength = -900 
+player.jumpStrength = -1200
 player.isMoving = false
 player.grounded = true
 player.sprite = love.graphics.newImage("sprites/player.png")
