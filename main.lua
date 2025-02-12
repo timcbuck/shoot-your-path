@@ -17,6 +17,7 @@ function love.load()
     require "player"
     require "crate"
     require "bullet"
+    require "goal"
     -- Initalise tables
     platforms = {}
     -- Load first level
@@ -33,7 +34,7 @@ end
 function love.draw()
     playerDraw()
     bulletDraw()
-    --crateDraw()
+    crateDraw()
     if debug then
         world:draw()
     end
@@ -60,6 +61,11 @@ function loadLevel(level)
             createCrate(obj.x, obj.y)
         end
     end
+
+    -- Create goal
+    for i, obj in pairs(level.layers["Goal"].objects) do
+        createGoal(obj.x, obj.y)
+    end
 end
 
 function createRectPlatform(x, y, width, height)
@@ -75,4 +81,13 @@ function love.mousepressed(x, y, button)
         -- Shoot bullet in direction of clicked location
         createBullet(player:getX(), player:getY())
     end
+end
+
+function distanceBetween(x1, y1, x2, y2)
+    return math.sqrt((x2-x1)^2 + (y2-y1)^2)
+end
+
+function playerMouseAngle()
+    -- atan2 is a function that can find the angle between two points (x1, y1) and (x2, y2)
+    return math.atan2(love.mouse.getY() - player:getY(), love.mouse.getX() - player:getX()) -- returns angle in radians
 end
