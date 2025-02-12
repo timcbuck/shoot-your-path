@@ -1,7 +1,9 @@
 playerStartX = 100
 playerStartY = 100
+playerWidth = 32
+playerHeight = 32
 
-player = world:newRectangleCollider(playerStartX, playerStartY, 32, 32, {collision_class = "Player"})
+player = world:newRectangleCollider(playerStartX, playerStartY, playerWidth, playerHeight, {collision_class = "Player"})
 player:setFixedRotation(true)
 player.speed = 240
 player.jumpStrength = -1200
@@ -11,6 +13,7 @@ player.sprite = love.graphics.newImage("sprites/player.png")
 
 function playerUpdate(dt)
     player.isMoving = false
+    isPlayerGrounded()
     playerMovement(dt)
 end
 
@@ -39,8 +42,18 @@ function playerMovement(dt)
 end
 
 function love.keypressed(key)
-    if key == "space" then
+    if key == "w" and player.grounded then
         player:applyLinearImpulse(0, player.jumpStrength)
     end
 end
 
+function isPlayerGrounded()
+    local px, py = player:getPosition()
+    local colliders = world:queryRectangleArea(px - playerWidth/2, py + playerHeight/2, playerWidth, 1, {"Platform", "Crate"})
+    print(#colliders)
+    if #colliders == 0 then
+        player.grounded = false
+    else
+        player.grounded = true
+    end
+end

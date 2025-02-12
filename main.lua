@@ -29,6 +29,7 @@ function love.update(dt)
     playerUpdate(dt)
     bulletUpdate(dt)
     crateUpdate(dt)
+    goalUpdate()
 end
 
 function love.draw()
