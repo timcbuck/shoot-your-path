@@ -25,13 +25,14 @@ function love.load()
 end
 
 function love.update(dt)
-    world:update(dt) -- turn on gravity
+    world:update(dt) -- turn on physics
     playerUpdate(dt)
     bulletUpdate(dt)
     crateUpdate(dt)
 end
 
 function love.draw()
+    level:drawLayer(level.layers["Tile Layer 1"])
     playerDraw()
     bulletDraw()
     crateDraw()
@@ -40,8 +41,8 @@ function love.draw()
     end
 end
 
-function loadLevel(level)
-    level = sti("levels/" .. level .. ".lua") -- load the level .lua file
+function loadLevel(fileName)
+    level = sti("levels/" .. fileName .. ".lua") -- load the level .lua file
 
     -- Set player start position
     for i, obj in pairs(level.layers["Spawn"].objects) do
