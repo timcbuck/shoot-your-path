@@ -11,7 +11,7 @@ function bulletUpdate(dt)
 
     -- Check collision with crates
     for i, c in ipairs(crates) do
-        checkCollision(c, c.width/2)
+        checkCollisionWithCrate(c, c.width)
     end
 
     removeBullets()
@@ -23,19 +23,27 @@ function bulletDraw()
     end
 end
 
-function checkCollision(other, threshold)
+function checkCollisionWithCrate(c, threshold)
+    local cx = c:getX() - c.width / 2
+    local cy = c:getY() - c.height / 2
     for i, b in ipairs(bullets) do
-        if distanceBetween(b.x, b.y, other:getX(), other:getY()) < threshold then
+        if b.x > cx and b.x < cx + c.width and b.y > cy and b.y < cy + c.width then
             b.dead = true
-            if other.collision_class == "Crate" then
-                other.dead = true
-            end
+            c.dead = true
         end
     end
+        --[[
+        if distanceBetween(b.x, b.y, crate:getX(), crate:getY()) < threshold then
+            b.dead = true
+            if crate.collision_class == "Crate" then
+                crate.dead = true
+            end
+        end
+        ]]
 end
 
 function createBullet(x, y)
-    if #bullets < 3 then
+    if #bullets < 4 then
         local bullet = {}
         bullet.x = x
         bullet.y = y

@@ -1,7 +1,7 @@
 local love = require "love"
 local sti = require "libraries/Simple-Tiled-Implementation/sti"
 
-debug = false
+debug = true
 
 function love.load()
     -- Create world using windfield library for physics
@@ -18,11 +18,13 @@ function love.load()
     require "crate"
     require "bullet"
     require "goal"
+    require "button"
+    require "door"
     -- Initalise tables
     platforms = {}
     -- Load first level
     levelId = 1
-    maxLevel = 2
+    maxLevel = 3
     loadLevel("level" .. levelId)
 end
 
@@ -47,27 +49,18 @@ end
 function loadLevel(fileName)
     destroyAll()
     
-
     level = sti("levels/" .. fileName .. ".lua") -- load the level .lua file
 
     resetPlayer()
 
-    -- Create platforms
+    -- Create level objects
     for i, obj in pairs(level.layers["Platform"].objects) do
         createRectPlatform(obj.x, obj.y, obj.width, obj.height)
     end
-
-    -- Create crates
-    if level.layers["Crate"].objects then
-        for i, obj in pairs(level.layers["Crate"].objects) do
-            createCrate(obj.x, obj.y)
-        end
-    end
-
-    -- Create goal
-    for i, obj in pairs(level.layers["Goal"].objects) do
-        createGoal(obj.x, obj.y)
-    end
+    if level.layers["Crate"] then createCrates() end
+    if level.layers["Goal"] then createGoals() end
+    if level.layers["Button"] then createButtons() end
+    if level.layers["Door"] then createDoors() end
 end
 
 function createRectPlatform(x, y, width, height)

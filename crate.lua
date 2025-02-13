@@ -1,15 +1,19 @@
 crates = {}
 
 crateSprite = love.graphics.newImage("sprites/crate.png")
-crateWidth = crateSprite:getWidth()
-crateHeight = crateSprite:getHeight()
 
-function createCrate(x, y)
-    local crate = world:newRectangleCollider(x, y, crateWidth, crateHeight, {collision_class = "Crate"})
+function createCrates()
+    for i, c in pairs(level.layers["Crate"].objects) do
+        createCrate(c.x, c.y, c.width, c.height)
+    end
+end
+
+function createCrate(x, y, width, height)
+    local crate = world:newRectangleCollider(x, y, width, height, {collision_class = "Crate"})
     crate:setType("static")
     crate.sprite = crateSprite
-    crate.width = crateWidth
-    crate.height = crateHeight
+    crate.width = width
+    crate.height = height
     crate.dead = false
     table.insert(crates, crate)
 end
