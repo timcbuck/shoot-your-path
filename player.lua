@@ -57,3 +57,13 @@ function isPlayerGrounded()
         player.grounded = true
     end
 end
+
+function resetPlayer()
+    player:applyLinearImpulse(0, 0)
+    -- Set player start position
+    for i, obj in pairs(level.layers["Spawn"].objects) do
+        playerStartX = obj.x
+        playerStartY = obj.y
+    end
+    player:setPosition(playerStartX, playerStartY)
+end

@@ -14,7 +14,7 @@ end
 function goalEntered()
     for _, g in ipairs(goals) do
         if g:enter("Player") then
-            print("GOAL REACHED!")
+            loadNextLevel()
         end
     end 
 end

@@ -1,7 +1,7 @@
 local love = require "love"
 local sti = require "libraries/Simple-Tiled-Implementation/sti"
 
-debug = true
+debug = false
 
 function love.load()
     -- Create world using windfield library for physics
@@ -21,7 +21,9 @@ function love.load()
     -- Initalise tables
     platforms = {}
     -- Load first level
-    loadLevel("level1")
+    levelId = 1
+    maxLevel = 2
+    loadLevel("level" .. levelId)
 end
 
 function love.update(dt)
@@ -43,14 +45,12 @@ function love.draw()
 end
 
 function loadLevel(fileName)
+    destroyAll()
+    
+
     level = sti("levels/" .. fileName .. ".lua") -- load the level .lua file
 
-    -- Set player start position
-    for i, obj in pairs(level.layers["Spawn"].objects) do
-        playerStartX = obj.x
-        playerStartY = obj.y
-    end
-    player:setPosition(playerStartX, playerStartY)
+    resetPlayer()
 
     -- Create platforms
     for i, obj in pairs(level.layers["Platform"].objects) do
@@ -74,6 +74,8 @@ function createRectPlatform(x, y, width, height)
     if width > 0 and height > 0 then
         local platform = world:newRectangleCollider(x, y, width, height, {collision_class = "Platform"})
         platform:setType("static")
+        platform.width = width
+        platform.height = height
         table.insert(platforms, platform)
     end
 end
@@ -92,4 +94,41 @@ end
 function playerMouseAngle()
     -- atan2 is a function that can find the angle between two points (x1, y1) and (x2, y2)
     return math.atan2(love.mouse.getY() - player:getY(), love.mouse.getX() - player:getX()) -- returns angle in radians
+end
+
+function destroyAll()
+    local i = #platforms
+    while i > -1 do
+        if platforms[i] ~= nil then
+            platforms[i]:destroy()
+        end
+        table.remove(platforms, i)
+        i = i - 1
+    end
+
+    local i = #goals
+    while i > -1 do
+        if goals[i] ~= nil then
+            goals[i]:destroy()
+        end
+        table.remove(goals, i)
+        i = i - 1
+    end
+
+    local i = #crates
+    while i > -1 do
+        if crates[i] ~= nil then
+            crates[i]:destroy()
+        end
+        table.remove(crates, i)
+        i = i - 1
+    end
+end
+
+function loadNextLevel()
+    levelId = levelId + 1
+    if levelId > maxLevel then
+        levelId = 1
+    end
+    loadLevel("level" .. levelId)    
 end
