@@ -9,5 +9,7 @@ end
 function createButton(x, y, width, height)
     local button = world:newRectangleCollider(x, y, width, height, {collision_class = "Button"})
     button:setType("static")
+    button.width = width
+    button.height = height
     table.insert(buttons, button)
 end

@@ -9,5 +9,7 @@ end
 function createDoor(x, y, width, height)
     local door = world:newRectangleCollider(x, y, width, height, {collider_class = "Platform"})
     door:setType("static")
+    door.width = width
+    door.height = height
     table.insert(doors, door)
 end

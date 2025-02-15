@@ -34,6 +34,10 @@ function love.update(dt)
     bulletUpdate(dt)
     crateUpdate(dt)
     goalUpdate()
+    
+    if debug then
+        --printMousePosition()
+    end
 end
 
 function love.draw()
@@ -56,6 +60,9 @@ function loadLevel(fileName)
     -- Create level objects
     for i, obj in pairs(level.layers["Platform"].objects) do
         createRectPlatform(obj.x, obj.y, obj.width, obj.height)
+        print("PLATFORM " .. i)
+        print("X: " .. obj.x .. ", Y: " .. obj.y)
+        print("Width: " .. obj.width .. ", Height: " .. obj.height)
     end
     if level.layers["Crate"] then createCrates() end
     if level.layers["Goal"] then createGoals() end
@@ -124,4 +131,10 @@ function loadNextLevel()
         levelId = 1
     end
     loadLevel("level" .. levelId)    
+end
+
+function printMousePosition()
+    local mousex = love.mouse:getX()
+    local mousey = love.mouse:getY()
+    print("(" .. mousex .. ", " .. mousey .. ")")
 end
