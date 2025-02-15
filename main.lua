@@ -1,5 +1,6 @@
 local love = require "love"
 local sti = require "libraries/Simple-Tiled-Implementation/sti"
+local Timer = require "timer"
 
 debug = true
 
@@ -26,6 +27,9 @@ function love.load()
     levelId = 1
     maxLevel = 3
     loadLevel("level" .. levelId)
+    -- Timer example
+    --timer = Timer:new(5, testTimer, true)
+    --timer:start()
 end
 
 function love.update(dt)
@@ -34,7 +38,8 @@ function love.update(dt)
     bulletUpdate(dt)
     crateUpdate(dt)
     goalUpdate()
-    
+    --timer:update(dt)
+
     if debug then
         --printMousePosition()
     end
@@ -45,6 +50,7 @@ function love.draw()
     playerDraw()
     bulletDraw()
     crateDraw()
+
     if debug then
         world:draw()
     end
@@ -60,9 +66,6 @@ function loadLevel(fileName)
     -- Create level objects
     for i, obj in pairs(level.layers["Platform"].objects) do
         createRectPlatform(obj.x, obj.y, obj.width, obj.height)
-        print("PLATFORM " .. i)
-        print("X: " .. obj.x .. ", Y: " .. obj.y)
-        print("Width: " .. obj.width .. ", Height: " .. obj.height)
     end
     if level.layers["Crate"] then createCrates() end
     if level.layers["Goal"] then createGoals() end
