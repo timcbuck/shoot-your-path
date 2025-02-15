@@ -39,7 +39,9 @@ function love.update(dt)
     bulletUpdate(dt)
     crateUpdate(dt)
     goalUpdate()
-    --timer:update(dt)
+    if spikesTimer then
+        spikesTimer:update(dt)
+    end
 
     if debug then
         --printMousePosition()
@@ -52,6 +54,9 @@ function love.draw()
     bulletDraw()
     crateDraw()
     spikeDraw()
+    if spikesTimer then
+        spikesTimer:draw()
+    end
 
     if debug then
         world:draw()
@@ -73,7 +78,11 @@ function loadLevel(fileName)
     if level.layers["Goal"] then createGoals() end
     if level.layers["Button"] then createButtons() end
     if level.layers["Door"] then createDoors() end
-    if level.layers["Spike"] then createSpikes() end
+    if level.layers["Spike"] then
+        createSpikes()
+        spikesTimer = Timer:new(1.5, toggleSpikes, true)
+        spikesTimer:start()
+    end
 end
 
 function createRectPlatform(x, y, width, height)
