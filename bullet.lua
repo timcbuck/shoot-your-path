@@ -19,8 +19,14 @@ function bulletUpdate(dt)
         checkCollision(p)
     end
 
+    -- Check collision with doors
     for _, d in ipairs(doors) do
         checkCollision(d)
+    end
+
+    -- Check collision with buttons
+    for _, b in ipairs(buttons) do
+        checkCollision(b)
     end
 
     removeBullets()

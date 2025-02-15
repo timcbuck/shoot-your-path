@@ -21,10 +21,11 @@ function love.load()
     require "goal"
     require "button"
     require "door"
+    require "spike"
     -- Initalise tables
     platforms = {}
     -- Load first level
-    levelId = 1
+    levelId = 3
     maxLevel = 3
     loadLevel("level" .. levelId)
     -- Timer example
@@ -50,6 +51,7 @@ function love.draw()
     playerDraw()
     bulletDraw()
     crateDraw()
+    spikeDraw()
 
     if debug then
         world:draw()
@@ -71,6 +73,7 @@ function loadLevel(fileName)
     if level.layers["Goal"] then createGoals() end
     if level.layers["Button"] then createButtons() end
     if level.layers["Door"] then createDoors() end
+    if level.layers["Spike"] then createSpikes() end
 end
 
 function createRectPlatform(x, y, width, height)
@@ -125,6 +128,15 @@ function destroyAll()
         end
         table.remove(crates, i)
         i = i - 1
+    end
+
+    local i = #spikes
+    while i > -1 do
+        if spikes[i] ~= nil then
+            spikes[i]:destroy()
+        end
+        table.remove(spikes, i)
+        i = i -1
     end
 end
 

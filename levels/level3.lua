@@ -457,7 +457,7 @@ return {
       type = "objectgroup",
       draworder = "topdown",
       id = 8,
-      name = "Danger",
+      name = "Spike",
       class = "",
       visible = true,
       opacity = 1,
