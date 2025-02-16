@@ -2,7 +2,7 @@ local love = require "love"
 local sti = require "libraries/Simple-Tiled-Implementation/sti"
 local Timer = require "timer"
 
-debug = true
+debug = false
 
 function love.load()
     -- Create world using windfield library for physics
@@ -14,6 +14,8 @@ function love.load()
     world:addCollisionClass("Player")
     world:addCollisionClass("Crate")
     world:addCollisionClass("Bullet")
+    world:addCollisionClass("Danger")
+    world:addCollisionClass("Ignore", {ignores = {"Player", "Crate", "Bullet"}})
     -- Require objects (other files)
     require "player"
     require "crate"
@@ -25,12 +27,9 @@ function love.load()
     -- Initalise tables
     platforms = {}
     -- Load first level
-    levelId = 3
+    levelId = 1
     maxLevel = 3
     loadLevel("level" .. levelId)
-    -- Timer example
-    --timer = Timer:new(5, testTimer, true)
-    --timer:start()
 end
 
 function love.update(dt)
@@ -39,6 +38,7 @@ function love.update(dt)
     bulletUpdate(dt)
     crateUpdate(dt)
     goalUpdate()
+    buttonUpdate()
     if spikesTimer then
         spikesTimer:update(dt)
     end
@@ -54,12 +54,12 @@ function love.draw()
     bulletDraw()
     crateDraw()
     spikeDraw()
-    if spikesTimer then
-        spikesTimer:draw()
-    end
 
     if debug then
         world:draw()
+        if spikesTimer then
+            spikesTimer:draw()
+        end
     end
 end
 
@@ -146,6 +146,15 @@ function destroyAll()
         end
         table.remove(spikes, i)
         i = i -1
+    end
+    
+    local i = #buttons
+    while i > -1 do
+        if buttons[i] ~= nil then
+            buttons[i]:destroy()
+        end
+        table.remove(buttons, i)
+        i = i - 1
     end
 end
 

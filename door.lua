@@ -11,5 +11,18 @@ function createDoor(x, y, width, height)
     door:setType("static")
     door.width = width
     door.height = height
+    door.id = id
     table.insert(doors, door)
+end
+
+function destroyDoors()
+    print("destroy doors")
+    local i = #doors
+    while i > -1 do
+        if doors[i] ~= nil then
+            doors[i]:destroy()
+        end
+        table.remove(doors, i)
+        i = i - 1
+    end
 end

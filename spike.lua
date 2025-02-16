@@ -31,5 +31,12 @@ end
 function toggleSpikes()
     for _, s in pairs(spikes) do
         s.on = not s.on
+        if s.collision_class == "Danger" then
+            s:setCollisionClass("Ignore")
+        else
+            s:setCollisionClass("Danger")
+        end
     end
 end
+
+
